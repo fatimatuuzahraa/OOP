@@ -1,46 +1,54 @@
-public class Seat{
+enum SeatType {
+    REGULAR(12),
+    PREMIUM(18),
+    VIP(25);
 
-	private static int counter = 1;
-	
-	private String seatID;
-	private String rowNo;
-	private SeatType seatType;
-	boolean isAvailable;
+    private double cost;
 
-	Seat(SeatType seatType, String rowNo){
-		this.seatID = rowNo + String.format("%02d", counter++);
-		this.rowNo = rowNo;
-		this.seatType = seatType;
-	}
+    SeatType(double cost){
+        this.cost = cost;
+    }
 
-	public String getSeatID() {
-		return seatID;
-	}
-
-	public SeatType getSeatType() {
-		return seatType;
-	}
-
-	public String getRowNo() {
-		return rowNo;
-	}
-
-	public boolean isAvailable() {
-		return isAvailable;
-	}
-	@Override
-	public String toString(){
-		return String.format("%s %s %s %f %b", seatID, seatType, rowNo ,seatType.price, isAvailable);
-	}
-	
+    public double getPrice(){
+        return cost;
+    }
 }
 
-enum SeatType{
-	Regular(10), Premium(15), VIP(20);
-	
-	double price;
+public class Seat {
 
-	SeatType(int price){
-		this.price = price;
-	}
+    private String rowLabel;
+    private String seatCode;
+    private SeatType seatCategory;
+    private boolean reserved;
+
+    public Seat(String rowLabel, int seatNumber, SeatType seatCategory){
+        this.rowLabel = rowLabel;
+        this.seatCategory = seatCategory;
+        this.seatCode = rowLabel + seatNumber;
+        this.reserved = false;
+    }
+
+    public String getSeatID(){
+        return seatCode;
+    }
+
+    public SeatType getType(){
+        return seatCategory;
+    }
+
+    public boolean isBooked(){
+        return reserved;
+    }
+
+    public void bookSeat(){
+        reserved = true;
+    }
+
+    @Override
+    public String toString(){
+        return String.format(
+                "SeatID:%s Type:%s Price:%.2f Booked:%b",
+                seatCode, seatCategory, seatCategory.getPrice(), reserved
+        );
+    }
 }

@@ -1,36 +1,26 @@
 public class Movie {
 
-    private String title;
-    private String genre;
-    private int duration;
-    private String showTime;
+    private String movieTitle;
+    private String movieGenre;
+    private int length;
+    private String timeSlot;
 
-    Movie(String title, String genre, int duration, String showTime) {
-        this.title = title;
-        this.genre = genre;
-        this.duration = duration;
-        this.showTime = showTime;
+    public Movie(String movieTitle, String movieGenre, int length, String timeSlot){
+        this.movieTitle = movieTitle;
+        this.movieGenre = movieGenre;
+        this.length = length;
+        this.timeSlot = timeSlot;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTitle(){
+        return movieTitle;
     }
 
-    public String getGenre() {
-        return genre;
-    }
-
-    public int getDuration() {
-        return duration;
-    }
-
-    public String getShowTime() {
-        return showTime;
-    }
     @Override
-    public String toString() {
+    public String toString(){
         return String.format(
-                "Movie: %s | Genre: %s | Duration: %d mins | ShowTime: %s", title, genre, duration, showTime
+                "%s (%s) %d mins Show:%s",
+                movieTitle, movieGenre, length, timeSlot
         );
     }
 }

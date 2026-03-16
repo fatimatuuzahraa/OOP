@@ -1,55 +1,65 @@
 public class Screen {
-    private String name;
-    private String screenID;
-    private ScreenType screenType;
-    Seat[][] seats;
 
-    public Screen(String name, String screenID, ScreenType screenType, int seatCount) {
-        this.name = name;
-        this.screenID = screenID;
-        this.screenType = screenType;
-        this.seats = new Seat[seatCount][];
-        seats[0] = new Seat[10];
-        seats[1] = new Seat[11];
-        seats[2] = new Seat[12];
-        seats[3] = new Seat[13];
-        seats[4] = new Seat[13];
-        for(int i = 0; i<seats.length;i++){
-            for (int j = 0; j < seats[i].length; j++) {
-                seats[i][j] = new Seat(SeatType.Regular, " " + i);
+    private String id;
+    private String type;
+    private Movie currentMovie;
+    private Seat[][] seatLayout;
+
+    public Screen(String id, String type, Movie currentMovie, int totalRows, int totalCols, SeatType defaultType){
+        this.id = id;
+        this.type = type;
+        this.currentMovie = currentMovie;
+
+        seatLayout = new Seat[totalRows][totalCols];
+
+        for(int r = 0; r < totalRows; r++){
+            for(int c = 0; c < totalCols; c++){
+                String rowLabel = String.valueOf((char)('A' + r));
+                seatLayout[r][c] = new Seat(rowLabel, c + 1, defaultType);
             }
         }
-
     }
+
+    public String getScreenID(){
+        return id;
+    }
+
+    public Seat[][] getSeats(){
+        return seatLayout;
+    }
+
     public void displaySeats(){
-        for(int i = 0; i<seats.length;i++){
+        for(int r = 0; r < seatLayout.length; r++){
+            for(int c = 0; c < seatLayout[r].length; c++){
+                System.out.print(seatLayout[r][c] + " | ");
+            }
             System.out.println();
-            for (int j = 0; j < seats[i].length; j++) {
-                System.out.println(seats[i][j]+ "  ");
-            }
         }
     }
 
+    public void bookSeat(String seatID){
+        for(int r = 0; r < seatLayout.length; r++){
+            for(int c = 0; c < seatLayout[r].length; c++){
+
+                Seat s = seatLayout[r][c];
+
+                if(s.getSeatID().equals(seatID)){
+                    if(!s.isBooked()){
+                        s.bookSeat();
+                        System.out.println("Seat " + seatID + " booked");
+                    } 
+                    else{
+                        System.out.println("Seat already booked");
+                    }
+                    return;
+                }
+            }
+        }
+        System.out.println("Seat not found");
+    }
+
+    @Override
     public String toString(){
-        StringBuilder stringBuilder = new StringBuilder();
-        for(int i = 0; i<seats.length;i++){
-            stringBuilder.append("/n");
-            for (int j = 0; j < seats[i].length; j++) {
-                stringBuilder.append(seats[i][j]+ "  ");
-            }
-        }
-        return stringBuilder.toString();
-    }
-}
-
-enum ScreenType {
-    TWO_D("2D"),
-    THREE_D("3D"),
-    IMAX("IMAX");
-
-    String displayName;
-
-    ScreenType(String displayName) {
-        this.displayName = displayName;
+        return String.format("Screen:%s Type:%s Movie:%s", id, type, currentMovie);
     }
 }
